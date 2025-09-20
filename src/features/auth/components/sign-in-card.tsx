@@ -26,9 +26,13 @@ export const SignInCard = ({ setState }: SignInCardProps) => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [pending, setPending] = useState(false);
 
   const onProviderSignIn = (value: "github" | "google") => {
-    signIn(value);
+    setPending(true);
+    signIn(value).finally(() => {
+      setPending(false);
+    });
   };
 
   return (
@@ -43,7 +47,7 @@ export const SignInCard = ({ setState }: SignInCardProps) => {
       <CardContent className="space-y-5 px-0 pb-0">
         <form className="space-y-2.5">
           <Input
-            disabled={false}
+            disabled={pending}
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Email"
@@ -51,7 +55,7 @@ export const SignInCard = ({ setState }: SignInCardProps) => {
             required
           />
           <Input
-            disabled={false}
+            disabled={pending}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Password"
@@ -63,7 +67,7 @@ export const SignInCard = ({ setState }: SignInCardProps) => {
             className="w-full"
             size="lg"
             variant="huddle"
-            disabled={false}
+            disabled={pending}
           >
             Continue
           </Button>
@@ -75,7 +79,7 @@ export const SignInCard = ({ setState }: SignInCardProps) => {
             onClick={() => onProviderSignIn("google")}
             size="lg"
             variant="outline"
-            disabled={false}
+            disabled={pending}
           >
             <FcGoogle className="size-5 absolute left-3" />
             Continue with Google
@@ -85,7 +89,7 @@ export const SignInCard = ({ setState }: SignInCardProps) => {
             onClick={() => onProviderSignIn("github")}
             size="lg"
             variant="outline"
-            disabled={false}
+            disabled={pending}
           >
             <FaGithub className="size-5 absolute left-3" />
             Continue with Github
